@@ -17,8 +17,6 @@ Support the vendor MT7916 98K RX-only NPU firmware on AN7581:
 
 ---
 diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index 82c1998..8c48cc3 100644
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
 index ce1e5ec..3b2fde8 100644
 --- a/drivers/net/ethernet/airoha/airoha_npu.c
 +++ b/drivers/net/ethernet/airoha/airoha_npu.c

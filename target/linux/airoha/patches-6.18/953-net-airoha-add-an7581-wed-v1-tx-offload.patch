@@ -17,8 +17,6 @@ existing CDM4 NPU path for MT7996/MT7992.
 ---
 diff --git a/drivers/net/ethernet/airoha/Makefile b/drivers/net/ethernet/airoha/Makefile
 index 9446805..f98e51d 100644
-diff --git a/drivers/net/ethernet/airoha/Makefile b/drivers/net/ethernet/airoha/Makefile
-index 9446805..f98e51d 100644
 --- a/drivers/net/ethernet/airoha/Makefile
 +++ b/drivers/net/ethernet/airoha/Makefile
 @@ -6,4 +6,5 @@
