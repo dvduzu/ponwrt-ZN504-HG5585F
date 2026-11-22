@@ -20,6 +20,7 @@ on:
   push:
     branches:
       - master
+      - feat/hg5585f-wed-npu-offload-6.18
     paths:
       - 'configs/**'
       - 'files/**'
@@ -151,13 +152,13 @@ jobs:
 
       - name: Generate release tag
         id: tag
-        if: github.event.inputs.upload_release != 'false'
+        if: github.ref == 'refs/heads/master' && github.event.inputs.upload_release != 'false'
         run: |
           echo "release_tag=v$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_OUTPUT
 
       - name: Upload firmware to GitHub Release
         uses: softprops/action-gh-release@v2
-        if: github.event.inputs.upload_release != 'false'
+        if: github.ref == 'refs/heads/master' && github.event.inputs.upload_release != 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
