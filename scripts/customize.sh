@@ -23,19 +23,6 @@ fi
 rm -rf ./package/luci-app-momo 2>/dev/null || true
 echo "[OK] Momo package removed, Honk & Tailscale ready"
 
-# 3. 集成 Kahen 精华：luci-theme-footstrap (轻量响应式主题)
-if [ ! -d "./package/luci-theme-footstrap" ]; then
-    echo "--> Importing luci-theme-footstrap..."
-    tmp_theme="$(mktemp -d)"
-    git clone --depth 1 https://github.com/VizzleTF/luci-theme-footstrap.git "$tmp_theme/footstrap"
-    if [ -d "$tmp_theme/footstrap/luci-theme-footstrap" ]; then
-        cp -a "$tmp_theme/footstrap/luci-theme-footstrap" ./package/luci-theme-footstrap
-    elif [ -f "$tmp_theme/footstrap/Makefile" ]; then
-        cp -a "$tmp_theme/footstrap" ./package/luci-theme-footstrap
-    fi
-    rm -rf "$tmp_theme"
-fi
-
 # 4. 集成 Kahen 精华：自动连接 autocore 温度检测至 LuCI 状态界面
 if [ -f "./scripts/integrate-temperature.py" ]; then
     echo "--> Running temperature integration..."
@@ -60,17 +47,6 @@ if [ -d "./feeds/pon_userspace" ] && [ -f "$TOP_DIR/patches/03-pon-userspace-ipt
     echo "--> Applying IPTV bridge MAC flipping root-fix patch to pon_userspace..."
     (cd feeds/pon_userspace && git apply --check "$TOP_DIR/patches/03-pon-userspace-iptv-bridge-mac-fix.patch" 2>/dev/null && git apply "$TOP_DIR/patches/03-pon-userspace-iptv-bridge-mac-fix.patch") || true
     ./scripts/feeds install -p pon_userspace -f || true
-fi
-
-# 6. 升级 tailscale 核心至最新稳定版 1.104.7 (安全网状互联)
-TAILSCALE_MK="./feeds/packages/net/tailscale/Makefile"
-if [ -f "$TAILSCALE_MK" ] && ! grep -q "PKG_VERSION:=1.104.7" "$TAILSCALE_MK"; then
-    echo "--> Updating tailscale to 1.104.7..."
-    sed -i -E \
-        -e 's/^PKG_VERSION:=.*$/PKG_VERSION:=1.104.7/' \
-        -e 's/^PKG_HASH:=.*$/PKG_HASH:=fa1c922b33d0f6db6b073800d7a62fa84081323d247b21547c63a98ed7ecac14/' \
-        "$TAILSCALE_MK"
-    rm -f ./tmp/.packageinfo ./tmp/.config-package.in 2>/dev/null || true
 fi
 
 # 7. 规避 Airoha 架构下非必要 feed 循环依赖 (如无用的 squeezelite 音频)
