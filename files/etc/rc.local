@@ -42,14 +42,11 @@ if [ -w /sys/kernel/debug/ppe/bind_rate ]; then
     echo "5 5" > /sys/kernel/debug/ppe/bind_rate 2>/dev/null
 fi
 
-ethtool -K tailscale0 rx-udp-gro-forwarding on rx-gro-list off 2>/dev/null || true
 ethtool -K pppoe-wan gro on 2>/dev/null
 
 # 8. 保护光纤心跳进程 airoha-pond：免疫 OOM Killer (-1000)
 for p in $(pgrep airoha-pond 2>/dev/null); do
     echo -1000 > "/proc/$p/oom_score_adj" 2>/dev/null
 done
-
-tailscale set --accept-routes=false 2>/dev/null || true
 
 exit 0
